@@ -24,7 +24,7 @@ const HomePage = () => {
   }, [fetchProducts]);
 
   return (
-    <Container maxW="container.lg">
+    <Container maxW="container.lg" mt={{ base: 24, md: 14 }}>
       <Text fontSize="4xl" fontWeight="bold" mb={6} textAlign="center">
         Current Products
       </Text>

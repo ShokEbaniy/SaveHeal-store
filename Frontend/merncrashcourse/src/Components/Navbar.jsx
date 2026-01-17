@@ -1,89 +1,84 @@
-import React from "react";
-import {
-  Box,
-  Flex,
-  Button,
-  Container,
-  Text,
-  HStack,
-  useColorMode,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BsFillPlusSquareFill, BsShopWindow } from "react-icons/bs";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
+import { LogOut, User } from "lucide-react";
+import { useAuthStore } from "../store/useAuthStore.js";
 
 const Navbar = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  // Логика темной темы для Tailwind (без Chakra)
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const { logout, authUser } = useAuthStore();
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
   return (
-    <Container
-      maxW="1140px"
-      borderBottomWidth="1px"
-      pb={4}
-      mb={8}
-      bg={useColorModeValue("gray.100", "gray.1100")}
-    >
-      <Flex
-        h={16}
-        alignItems="center"
-        justifyContent="space-between"
-        flexDir={{ base: "column", md: "row" }}
-      >
-        <Box fontWeight="bold" fontSize={{ base: "22", md: "28" }}>
-          <Text
-            bgGradient={useColorModeValue(
-              "linear(to-r, green.500, green.600, green.700, green.900)",
-              "linear(to-r, green.200, green.300, green.400, green.500)"
-            )}
-            bgClip="text"
-            mt="2"
+    // Контейнер (Navbar)
+    <div className="max-w-[1140px] mx-auto px-4 border-b border-gray-200 dark:border-gray-700 pb-4 mb-8 bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+      {/* Flex Layout */}
+      <div className="flex flex-col md:flex-row h-auto md:h-16 items-center justify-between">
+        {/* Логотип с градиентом */}
+        <div className="font-bold text-3xl md:text-2xl mt-4 md:mt-0">
+          <Link to="/">
+            <span className="bg-gradient-to-r from-green-500 via-green-600 to-green-700 dark:from-green-200 dark:to-green-500 bg-clip-text text-transparent">
+              SaveHeal foods
+            </span>
+          </Link>
+        </div>
+        <div className="relative">
+          {authUser && (
+            <>
+              <LogOut
+                size={24}
+                className="size-[28px] fixed top-4 right-4"
+                onClick={logout}
+              />
+              <User size={24} className="size-[28px] fixed top-4 left-4" />
+            </>
+          )}
+        </div>
+
+        {/* Правая часть (Кнопки) */}
+        <div className="flex items-center gap-8 md:gap-4 mt-8 md:mt-2">
+          {/* Кнопка Home */}
+          <Link to="/">
+            <div className="p-3 bg-gray-200 dark:bg-gray-800 rounded-md transition-all duration-300 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100">
+              <BsShopWindow size={24} className="md:size-[28px]" />
+            </div>
+          </Link>
+
+          {/* Кнопка Create */}
+          <Link to="/create">
+            <div className="p-3 bg-gray-200 dark:bg-gray-800 rounded-md transition-all duration-300 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100">
+              <BsFillPlusSquareFill size={24} className="md:size-[28px]" />
+            </div>
+          </Link>
+
+          {/* Переключатель темы */}
+          <button
+            onClick={toggleTheme}
+            className="p-3 bg-gray-200 dark:bg-gray-800 rounded-md transition-all duration-300 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100"
           >
-            SaveHeal foods
-          </Text>
-        </Box>
-        <Text
-          fontSize={{ base: "28", md: "20 " }}
-          mt={{ base: 4, md: 3 }}
-          display="flex"
-          alignItems="center"
-        >
-          <HStack spacing={4} mt={{ base: 4, md: 0 }}>
-            <Link to="/">
-              <Box
-                px={4}
-                py={3}
-                bg={useColorModeValue("gray.200", "gray.800")}
-                borderRadius="md"
-                transition="0.3s"
-                _hover={{
-                  bg: useColorModeValue("gray.300", "gray.700"),
-                }}
-              >
-                <BsShopWindow />
-              </Box>
-            </Link>
-            <Link to="/create">
-              <Box
-                px={4}
-                py={3}
-                bg={useColorModeValue("gray.200", "gray.800")}
-                borderRadius="md"
-                transition="0.3s"
-                _hover={{
-                  bg: useColorModeValue("gray.300", "gray.700"),
-                }}
-              >
-                <BsFillPlusSquareFill />
-              </Box>
-            </Link>
-            <Button onClick={toggleColorMode}>
-              {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
-            </Button>
-          </HStack>
-        </Text>
-      </Flex>
-    </Container>
+            {theme === "light" ? <IoMoon size={24} /> : <LuSun size={24} />}
+          </button>
+
+          {/* Твоя DaisyUI кнопка (оставил как есть) */}
+          <button className="btn btn-soft btn-accent btn-lg">=</button>
+        </div>
+      </div>
+    </div>
   );
 };
 

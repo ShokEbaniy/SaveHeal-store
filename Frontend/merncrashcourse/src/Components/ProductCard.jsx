@@ -77,6 +77,7 @@ const ProductCard = ({ product, removeProduct, cardBg }) => {
         <FaRegTrashCan />
       </Button>
 
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

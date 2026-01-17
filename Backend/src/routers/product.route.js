@@ -1,7 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
-
-import Product from "../models/product.model.js";
 import {
   getProducts,
   createProduct,
@@ -14,8 +11,7 @@ router.post("/", createProduct);
 
 router.delete("/:id", deleteProduct);
 
-router.get("/", getProducts);
-
+router.get("/getProducts", getProducts);
 router.put("/:id", updateProduct);
 
 export default router;

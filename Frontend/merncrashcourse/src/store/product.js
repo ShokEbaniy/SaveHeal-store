@@ -47,7 +47,7 @@ export const useProductStore = create((set, get) => ({
     set({ loading: true, error: null });
 
     try {
-      const res = await fetch("/api/products");
+      const res = await fetch("/api/products/getProducts");
       const json = await res.json();
       const products = json.data ?? json;
 
