@@ -5,7 +5,6 @@ import cloudinary from "../config/cloudinary.js";
 
 const signup = async (req, res) => {
   try {
-    console.log("ferrv");
     const { userName, email, password } = req.body;
     if (!userName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
@@ -50,10 +49,9 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "Invalid email" });
+      return res.status(400).json({ message: "Invalid email", email });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {

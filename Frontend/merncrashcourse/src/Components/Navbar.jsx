@@ -42,10 +42,13 @@ const Navbar = () => {
             <>
               <LogOut
                 size={24}
-                className="size-[28px] fixed top-4 right-4"
+                className="size-[34px] fixed top-7 right-9 text-white hover:cursor-pointer hover:text-gray-300 transition-colors duration-100"
                 onClick={logout}
               />
-              <User size={24} className="size-[28px] fixed top-4 left-4" />
+              <User
+                size={24}
+                className="size-[34px] fixed top-7 left-9 text-white hover:cursor-pointer hover:text-gray-300 transition-colors duration-100"
+              />
             </>
           )}
         </div>
