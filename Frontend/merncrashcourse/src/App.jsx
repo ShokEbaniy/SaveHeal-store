@@ -12,7 +12,6 @@ import SettingsPage from "./Pages/SettingsPage.jsx";
 import { Loader } from "lucide-react";
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-  const bg = useColorModeValue("gray.100", "gray.900");
 
   useEffect(() => {
     checkAuth();
