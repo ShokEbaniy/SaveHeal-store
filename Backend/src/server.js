@@ -8,8 +8,8 @@ import cookieParser from "cookie-parser";
 import productRouter from "./routers/product.route.js";
 import messageRouter from "./routers/message.route.js";
 import cors from "cors";
+import { app, server } from "./config/socket.js";
 dotenv.config();
-const app = express();
 
 const PORT = process.env.PORT || 5001;
 
@@ -18,7 +18,6 @@ const __dirname = path.dirname(__filename);
 
 const distPath = path.resolve(__dirname, "../../Frontend/merncrashcourse/dist");
 
-app.use(express.json());
 connectDB();
 // Добавь limit: "10mb" (или больше)
 app.use(express.json({ limit: "10mb" }));
@@ -28,10 +27,10 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 app.use("/api/auth", authRouters);
-app.use("/api/message", messageRouter);
+app.use("/api/chats", messageRouter);
 app.use("/api/products", productRouter);
 
 if (process.env.NODE_ENV === "production") {
@@ -42,6 +41,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

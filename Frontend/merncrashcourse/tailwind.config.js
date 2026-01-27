@@ -6,6 +6,6 @@ export default {
   theme: { extend: {} },
   plugins: [daisyui],
   daisyui: {
-    themes: ["forest", "emerald", "light"],
+    themes: ["forest", "emerald", "light", "dark", "retro"],
   },
 };

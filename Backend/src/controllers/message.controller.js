@@ -1,5 +1,6 @@
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
+import cloudinary from "../config/cloudinary.js";
 
 const getUsersForSideBar = async (req, res) => {
   try {
@@ -12,7 +13,7 @@ const getUsersForSideBar = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Users got successfully! -" + filteredUsers });
+      .json({ message: "Users got successfully! -", data: filteredUsers });
   } catch (e) {
     res.status(500).json({ message: e });
   }
@@ -45,7 +46,7 @@ const sendMessage = async (req, res) => {
     let imageUrl;
     if (image) {
       const uploadResponse = await cloudinary.uploader.upload(image);
-      imageUrl = uploadResponse;
+      imageUrl = uploadResponse.secure_url;
     }
     const newMessage = new Message({
       receiverId,
@@ -53,7 +54,7 @@ const sendMessage = async (req, res) => {
       text,
       image: imageUrl,
     });
-    await new newMessage.save();
+    await newMessage.save();
     res.status(200).json({ message: newMessage });
   } catch (e) {
     res.status(500).json({ message: e });

@@ -97,13 +97,11 @@ const updateProfile = async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { profilePic: uploadResponse.secure_url },
-      { new: true }
+      { profilePic: uploadResponse.secure_url, username: req.body.userName, email: req.body.email },
+      { new: true },
     );
 
-    return res
-      .status(201)
-      .json({ message: "Profile succesfully updated" + updatedUser });
+    return res.status(201).json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" + error });
   }
@@ -111,7 +109,7 @@ const updateProfile = async (req, res) => {
 
 const checkAuth = (req, res) => {
   try {
-    return res.status(200).json({ message: req.user });
+    return res.status(200).json(req.user);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

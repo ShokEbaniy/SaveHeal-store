@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { BsFillPlusSquareFill, BsShopWindow } from "react-icons/bs";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, Settings } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore.js";
 
 const Navbar = () => {
@@ -37,18 +37,26 @@ const Navbar = () => {
             </span>
           </Link>
         </div>
-        <div className="relative">
+        <div className="w-full relative">
           {authUser && (
             <>
               <LogOut
                 size={24}
-                className="size-[34px] fixed top-7 right-9 text-white hover:cursor-pointer hover:text-gray-300 transition-colors duration-100"
+                className="size-[44px] absolute -top-2 right-[4%] text-white hover:cursor-pointer hover:text-gray-300 transition-colors duration-100"
                 onClick={logout}
               />
-              <User
-                size={24}
-                className="size-[34px] fixed top-7 left-9 text-white hover:cursor-pointer hover:text-gray-300 transition-colors duration-100"
-              />
+              <NavLink to="/profile">
+                <User
+                  size={24}
+                  className="size-[44px] absolute -top-2 left-[4%] text-white hover:cursor-pointer hover:text-gray-300 transition-colors duration-100"
+                />
+              </NavLink>
+              <NavLink to="/settings">
+                <Settings
+                  size={24}
+                  className="size-[44px] absolute -top-2 left-[16%] text-white hover:cursor-pointer hover:text-gray-300 transition-colors duration-100"
+                />
+              </NavLink>
             </>
           )}
         </div>

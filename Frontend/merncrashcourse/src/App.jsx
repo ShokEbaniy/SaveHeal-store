@@ -1,4 +1,3 @@
-import { Box, useColorModeValue } from "@chakra-ui/react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "./Pages/HomePage.jsx";
 import CreateProductPage from "./Pages/CreateProductPage.jsx";
@@ -10,24 +9,30 @@ import SignUpPage from "./Pages/SignUpPage.jsx";
 import ProfilePage from "./Pages/ProfilePage.jsx";
 import SettingsPage from "./Pages/SettingsPage.jsx";
 import { Loader } from "lucide-react";
+import { useThemesStore } from "./store/useThemesStore.js";
+import ChatsPage from "./Pages/ChatsPage.jsx";
+import TabsBar from "./Components/TabsBar.jsx";
+import { Tabs } from "@chakra-ui/react";
 function App() {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
+  const { theme } = useThemesStore();
+  console.log("Online users:", onlineUsers);
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
   if (isCheckingAuth && !authUser) {
-    // token changed to !token
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="animate-spin size-14" />
       </div>
     );
   }
+  console.log("Current theme in App.jsx:", theme);
   return (
-    <Box minH="100dvh" bg={bg}>
+    <div data-theme={theme}>
       <Navbar />
+      <TabsBar />
       <Routes>
         <Route
           path="/"
@@ -45,10 +50,20 @@ function App() {
           path="/login"
           element={!authUser ? <LoginPage /> : <Navigate to="/" />}
         />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/settings" element={<SettingsPage />} />
+        <Route
+          path="/profile"
+          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/settings"
+          element={authUser ? <SettingsPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/chats"
+          element={authUser ? <ChatsPage /> : <Navigate to="/login" />}
+        />
       </Routes>
-    </Box>
+    </div>
   );
 }
 
